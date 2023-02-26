@@ -2,16 +2,15 @@ import org.junit.Test;
 import pages.OrderPage;
 
 
-    public class OrderPageTest extends BaseTest {
-    //private final String expected;
-
+public class OrderPageTest extends BaseTest {
 
     @Test
     public void testOrder() {
         OrderPage page = new OrderPage(driver);
         page.clickOrderButtonHeader();
-        page.setInputName("Аня");
+        page.setName("Аня");
 
+        page.selectMetroStation("Каховская");
         //Assert.assertEquals(expected, answer);
     }
 
