@@ -5,11 +5,13 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import java.util.List;
+
 public class OrderPage extends BasePage {
 
     //Заполнить форму заказа.
     private By orderButtonHeader = By.className("Button_Button__ra12g");
-    private By orderButtonDown = By.className("Button_Button__ra12g Button_Middle__1CSJM");
+    private By orderButtonDown = By.className("Button_Middle__1CSJM");
     private By inputName = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[1]/input");
     private By inputSurname = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[2]/input");
     private By inputAdress = By.xpath("//*[@id=\"root\"]/div/div[2]/div[2]/div[3]/input");
@@ -22,37 +24,36 @@ public class OrderPage extends BasePage {
     }
 
     public void clickOrderButtonHeader() {
-        WebElement element = driver.findElement(orderButtonHeader);
-        element.click();
+        driver.findElement(orderButtonHeader).click();
     }
 
-//    public void clickOrderButtonDown() {
-//        scroll();
-//        WebElement element = driver.findElement(orderButtonDown).click();
-//        element.click();
-//    }
-//
-    public void setInputName(String name) {
-        WebElement element = driver.findElement(inputName);
-        element.sendKeys(name);
+    public void clickOrderButtonDown() {
+        scroll();
+        driver.findElement(orderButtonDown).click();
     }
 
-//    public void setInputSurname(String surname) {
-//        WebElement element = driver.findElement(inputSurname).sendKeys(surname);
-//    }
-//
-//    public void setInputAdress(String adress) {
-//        WebElement element = driver.findElement(inputAdress).sendKeys(adress);
-//    }
-//
-//    public void setInputPhoneNumber(String phoneNumber) {
-//        WebElement element = driver.findElement(inputPhoneNumber).sendKeys(phoneNumber);
-//    }
-//
-//    public void selectMetroStation() {
-//        WebElement element = driver.findElement(metroDropdown).click();
-//        element.findElement()
-//    }
+    public void setName(String name) {
+        driver.findElement(inputName).sendKeys(name);
+    }
+
+
+    public void setSurname(String surname) {
+        driver.findElement(inputSurname).sendKeys(surname);
+    }
+
+    public void setInputAddress(String adress) {
+        driver.findElement(inputAdress).sendKeys(adress);
+    }
+
+    public void setInputPhoneNumber(String phoneNumber) {
+        driver.findElement(inputPhoneNumber).sendKeys(phoneNumber);
+    }
+
+    public void selectMetroStation(String metro) {
+        driver.findElement(metroDropdown).click();
+        WebElement button = driver.findElement(By.xpath("//*[text()='" + metro + "']/parent::button"));
+        button.click();
+    }
 
     public void scroll(){
         WebElement element = driver.findElement(By.className("Home_FinishButton__1_cWm"));
