@@ -7,22 +7,21 @@ import org.openqa.selenium.WebElement;
 
 
 public class HomePage extends BasePage {
-    private By questionButtons = By.className("accordion__button");
-    private By answers = By.className("accordion__panel");
-
 
     public HomePage(WebDriver driver) {
         super(driver);
     }
-
-    public void clickQuestion(String id){
+    //Метод, кликающий на вопросы, открывающий ответы
+    public void clickQuestion(int num){
         scroll();
+        String id = "accordion__heading-" + num;
         WebElement element = driver.findElement(By.id(id));
 
         element.click();
     }
-
-    public String getAnswer(String id){
+    //Метод, возвращающий текст ответов на конкретный вопрос
+    public String getAnswer(int num){
+        String id = "accordion__panel-" + num;
         WebElement element = driver.findElement(By.id(id));
 
         return element.getText();

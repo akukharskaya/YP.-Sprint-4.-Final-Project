@@ -3,11 +3,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import pages.OrderPage;
 
-import java.util.List;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
 @RunWith(Parameterized.class)
 public class OrderPageTest extends BaseTest {
+    private final Boolean isHeaderButton;
     private final String name;
     private final String surname;
     private final String address;
@@ -16,11 +20,12 @@ public class OrderPageTest extends BaseTest {
 
     private final String date;
     private final String period;
-    private final List<String> colors;
+    private final Set<String> colors;
     private final String comments;
-
-    public OrderPageTest(String name, String surname, String address, String station, String phone,
-                         String date, String period, List<String> colors, String comments) {
+    //Два набора тестовых данных
+    public OrderPageTest(Boolean isHeaderButton, String name, String surname, String address, String station, String phone,
+                         String date, String period, Set<String> colors, String comments) {
+        this.isHeaderButton = isHeaderButton;
         this.name = name;
         this.surname = surname;
         this.address = address;
@@ -35,15 +40,16 @@ public class OrderPageTest extends BaseTest {
     @Parameterized.Parameters
     public static Object[][] parameters(){
         return new Object[][]{
-                {"Анна", "Анна", "Москва", "Каховская", "77777777777", "14.02.2023", "4 days", List.of("black", "gray"), "test comments"}
+                {true, "Анна", "Анна", "Москва", "Технопарк", "77777777777", "01.03.2023", "двое суток", Set.of("чёрный жемчуг"), "Привезите к 15:00"},
+                {false, "Денис","Ден","Москва","Фили","799999999999","28.02.2023","трое суток", Set.of("серая безысходность"),"Спасибо"}
         };
     }
 
 
     @Test
-    public void testOrderInHeader() {
+    public void testOrder() {
         OrderPage page = new OrderPage(driver);
-        page.clickOrderInHeader();
+        page.clickOrder(isHeaderButton);
         page.setName(name);
         page.setSurname(surname);
         page.setAddress(address);
@@ -51,9 +57,18 @@ public class OrderPageTest extends BaseTest {
         page.selectMetroStation(station);
         page.clickNext();
 
+        page.selectRentalPeriod(period);
         page.setDate(date);
         page.setComments(comments);
-        //Assert.assertEquals(expected, answer);
+        page.choiceColour(colors);
+        page.clickOrderButton();
+        page.clickConfirmOrder();
+
+        String expected = "Заказ оформлен";
+        String actual = page.getOrderText();
+
+        //!!! Тест на Chrome падает из-за некликабельности кнопки "Да" при оформлении заказа, для корректного тестирования используйте Firefox
+        assertThat("Заказ не оформлен. Оформить его можно в браузере Firefox",actual,containsString(expected));
     }
 
 
